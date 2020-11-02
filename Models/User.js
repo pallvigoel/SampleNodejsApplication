@@ -1,10 +1,23 @@
-const ObjectId = Schema.ObjectId;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const UserDb = new Schema(
-    { name: String,
+let GeoModel = require('./GeoJson');
+const GeoSchema = new Schema({
+  type:{
+    type:String,
+    default:"Point"
+  },
+  coordinates:{
+    lat:{type:String},
+    long:{type:String}
+  }
+})
+const UserSchema = new Schema(
+    {
+      created_at    : { type: Date, required: true, default: Date.now },
+      name: String,
       mobile: String,
       email: String,
+
       address: { 
           street: String,
           locality: String,
@@ -12,7 +25,9 @@ const UserDb = new Schema(
           state: String,
           pincode: String,
           coordinatesType: String,
-          coordinates: [Number] 
+          geometry:GeoSchema
+
           } 
     });
-    module.exports = UserDb;
+    module.exports = mongoose.model('User', UserSchema)
+
